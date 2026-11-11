@@ -1,0 +1,32 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HelpSpace scanner findings</title><style>body{font:16px/1.6 system-ui,sans-serif;color:#18283d;background:#f3f5f8;max-width:1040px;margin:40px auto;padding:0 24px}header,article{background:white;padding:24px;border:1px solid #cdd7e2;border-radius:10px;margin-bottom:20px}h1{margin-top:0}h2{font-size:19px}pre{background:#edf2f7;padding:16px;overflow:auto;font-size:13px}code{font-size:14px}</style></head><body><header><h1>HelpSpace — scanner findings</h1><p>Actual Semgrep 1.152.0 scan using local educational rules. 7 findings across 4 scanned Python files. Scanner priority is an initial triage label, not a verified impact assessment. Some alerts may not be exploitable; other issues may be absent from this report.</p><p>Consult manifest.json for the source hashes and exact scan command. Use the candidate submission template to record your conclusions.</p></header><article><h2>HS-01 · scan-rules.legacy-digest-review</h2><p><strong>Scanner priority: Medium</strong> · <code>helpdesk/__init__.py:43</code></p><p>MD5 is used. Determine whether this digest protects secrets, authenticity, integrity, or only non-security metadata.</p><pre>  41      # Cache-busting identifier for the stylesheet; not a session or integrity token.
+  42      stylesheet = Path(app.static_folder) / &quot;style.css&quot;
+  43      asset_version = hashlib.md5(stylesheet.read_bytes(), usedforsecurity=False).hexdigest()[:12]
+  44      app.jinja_env.globals[&quot;asset_version&quot;] = asset_version
+  45      return app</pre></article><article><h2>HS-02 · scan-rules.debug-server-configuration</h2><p><strong>Scanner priority: Critical</strong> · <code>helpdesk/__main__.py:9</code></p><p>The application server accepts a runtime debug setting. Determine its effective value and exposure in the supplied deployment.</p><pre>   7  if __name__ == &quot;__main__&quot;:
+   8      debug_enabled = os.environ.get(&quot;HELPSPACE_DEBUG&quot;, &quot;0&quot;) == &quot;1&quot;
+   9      app.run(
+  10          host=os.environ.get(&quot;HELPSPACE_HOST&quot;, &quot;127.0.0.1&quot;),
+  11          port=8080,
+  12          debug=debug_enabled,
+  13          use_reloader=False,
+  14      )</pre></article><article><h2>HS-03 · scan-rules.login-query-review</h2><p><strong>Scanner priority: High</strong> · <code>helpdesk/routes.py:54</code></p><p>User lookup receives an email used by a database query. Verify whether SQL structure can be influenced by that value.</p><pre>  52
+  53  def find_user(email):
+  54      return get_db().execute(&quot;SELECT * FROM users WHERE email = ?&quot;, (email,)).fetchone()
+  55
+  56</pre></article><article><h2>HS-04 · scan-rules.html-trust-boundary</h2><p><strong>Scanner priority: Medium</strong> · <code>helpdesk/routes.py:59</code></p><p>Markup creates trusted HTML. Check the origin of the value, interpolation behavior, and the rendering context.</p><pre>  57  @bp.app_template_filter(&quot;badge&quot;)
+  58  def badge(label):
+  59      return Markup(&#x27;&lt;span class=&quot;badge&quot;&gt;{}&lt;/span&gt;&#x27;).format(label)
+  60
+  61</pre></article><article><h2>HS-05 · scan-rules.html-trust-boundary</h2><p><strong>Scanner priority: Medium</strong> · <code>helpdesk/routes.py:64</code></p><p>Markup creates trusted HTML. Check the origin of the value, interpolation behavior, and the rendering context.</p><pre>  62  @bp.app_template_filter(&quot;comment_html&quot;)
+  63  def comment_html(body):
+  64      return Markup(body)
+  65
+  66</pre></article><article><h2>HS-06 · scan-rules.sql-execution-review</h2><p><strong>Scanner priority: High</strong> · <code>helpdesk/routes.py:99</code></p><p>SQL is executed without bound parameters at this call. Trace how the statement is constructed and whether request data can change its structure.</p><pre>  97      term = request.args.get(&quot;q&quot;, &quot;&quot;)
+  98      query = f&quot;SELECT * FROM tickets WHERE organization_id = {g.user[&#x27;organization_id&#x27;]} AND title LIKE &#x27;%{term}%&#x27; ORDER BY id&quot;
+  99      rows = get_db().execute(query).fetchall()
+ 100      return render_template(&quot;tickets.html&quot;, tickets=rows, query=term)
+ 101</pre></article><article><h2>HS-07 · scan-rules.profile-role-input</h2><p><strong>Scanner priority: Medium</strong> · <code>helpdesk/routes.py:143</code></p><p>A role value is accepted from a form. Check who can submit it and whether the server authorizes the resulting role change.</p><pre> 141      if request.method == &quot;POST&quot;:
+ 142          name = request.form.get(&quot;display_name&quot;, &quot;&quot;).strip()
+ 143          role = request.form.get(&quot;role&quot;, g.user[&quot;role&quot;])
+ 144          if not name or len(name) &gt; 80 or role not in (&quot;member&quot;, &quot;admin&quot;):
+ 145              abort(400, &quot;Invalid profile&quot;)</pre></article></body></html>

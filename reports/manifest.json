@@ -1,0 +1,33 @@
+{
+  "generated_at_utc": "2026-11-11T14:17:52.558220+00:00",
+  "scanner": "Semgrep Community Edition",
+  "scanner_version": "1.152.0",
+  "command": "semgrep scan --config scan-rules/training.yml --metrics=off --disable-version-check --json --output reports/semgrep.json helpdesk",
+  "rule_policy": "Local educational rules; not a production audit or an exhaustive scan.",
+  "finding_count": 7,
+  "scanned_paths": [
+    "helpdesk/__init__.py",
+    "helpdesk/__main__.py",
+    "helpdesk/db.py",
+    "helpdesk/routes.py"
+  ],
+  "semgrep_json_sha256": "9e8cfcd68548404ac8bd690592f0984828e6626f90d3546b477c1916ac368426",
+  "source_sha256": {
+    "Dockerfile": "2efd0aaab85cf878bf9fdcf39848b8b1c16e0e826b3a8335996a4c8144716447",
+    "compose.yaml": "9d3ba62fa250728880d1ad8e07261dd142bf438f38c6a91dfb7ce7f901bc5fc1",
+    "helpdesk/__init__.py": "7b45ded4f28a0d6778ba8e0633e86d6c9adeef9b0502ac9010a355eb12656f4c",
+    "helpdesk/__main__.py": "852b8ab9feeb8f13124edac58389d14404cbac5cabb6d487c48f389b851dd906",
+    "helpdesk/db.py": "efbc445eef188f17060d2ec1fe02f10af89534d281834a5fb40e16a468c99faa",
+    "helpdesk/routes.py": "fce3db244f2ecc396a97faa97123005702727c4ef48d5d41132ffee6ea9f3d15",
+    "helpdesk/static/style.css": "3f6c6eee0a0c4531061a4d1674acca0fdf502458ab6cdfed3c9fdf1fb2b4e971",
+    "helpdesk/templates/admin.html": "3d7589ba179fcc0b9b0b2b4c96632cdb6c7a3ffaf6b0198c1f678e4f97c0ee90",
+    "helpdesk/templates/base.html": "28f78f15e545d5d3d38653080cdc23ee5253bad63f523217527c0230b7b8ec86",
+    "helpdesk/templates/login.html": "a2f4a595965d4c673102b0bf4c7ff338abd464bc79b7e9632d15d5cac9075ee0",
+    "helpdesk/templates/profile.html": "72762eb41e38cdc2d301022a3d6823df69e80f9897cc3d89a8547460cb19e876",
+    "helpdesk/templates/ticket.html": "2aa1cac5534873defe91c7a39e2e84495bb6cfca980596d20597ce3b5e0627fa",
+    "helpdesk/templates/tickets.html": "2db2e0c4410c62c0b971d36c285f951cbf0305b5d7abf3450cfdd516adbe8135",
+    "requirements-scan.txt": "0130dcf1a56b63b659ab882eb8ee2eaa701ad138b0da0e53bbff64a3995b0249",
+    "requirements.txt": "290e2fdb56f162108facfe527d3edfaa3813b38edeaf0f0f1157385ed1057a53",
+    "scan-rules/training.yml": "c5d1fb860173898c6f02102444ac063af3a7ba19f5a199463dd17c37ef56df45"
+  }
+}

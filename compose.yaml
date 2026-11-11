@@ -1,0 +1,26 @@
+services:
+  helpdesk:
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      HELPSPACE_HOST: "0.0.0.0"
+      HELPSPACE_DEBUG: "0"
+    volumes:
+      - lab-data:/app/instance
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/login', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - lab
+volumes:
+  lab-data:
+networks:
+  lab:
+    internal: true

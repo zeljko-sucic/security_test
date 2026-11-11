@@ -1,0 +1,51 @@
+# Educational triage rules, not a production security policy.
+# Findings are leads to investigate, not verified vulnerabilities.
+rules:
+  - id: sql-execution-review
+    languages: [python]
+    severity: ERROR
+    message: SQL is executed without bound parameters at this call. Trace how the statement is constructed and whether request data can change its structure.
+    metadata:
+      cwe: CWE-89
+      triage_priority: High
+    pattern: $DB.execute($SQL).fetchall()
+  - id: html-trust-boundary
+    languages: [python]
+    severity: WARNING
+    message: Markup creates trusted HTML. Check the origin of the value, interpolation behavior, and the rendering context.
+    metadata:
+      cwe: CWE-79
+      triage_priority: Medium
+    pattern: Markup($VALUE)
+  - id: profile-role-input
+    languages: [python]
+    severity: WARNING
+    message: A role value is accepted from a form. Check who can submit it and whether the server authorizes the resulting role change.
+    metadata:
+      cwe: CWE-862
+      triage_priority: Medium
+    pattern: request.form.get("role", ...)
+  - id: debug-server-configuration
+    languages: [python]
+    severity: ERROR
+    message: The application server accepts a runtime debug setting. Determine its effective value and exposure in the supplied deployment.
+    metadata:
+      cwe: CWE-489
+      triage_priority: Critical
+    pattern: $APP.run(..., debug=$VALUE, ...)
+  - id: login-query-review
+    languages: [python]
+    severity: ERROR
+    message: User lookup receives an email used by a database query. Verify whether SQL structure can be influenced by that value.
+    metadata:
+      cwe: CWE-89
+      triage_priority: High
+    pattern: $DB.execute("SELECT * FROM users WHERE email = ?", ($EMAIL,)).fetchone()
+  - id: legacy-digest-review
+    languages: [python]
+    severity: WARNING
+    message: MD5 is used. Determine whether this digest protects secrets, authenticity, integrity, or only non-security metadata.
+    metadata:
+      cwe: CWE-328
+      triage_priority: Medium
+    pattern: hashlib.md5(...)

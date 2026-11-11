@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}HelpSpace{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css', v=asset_version) }}"></head>
+<body><header><a class="brand" href="{{ url_for('main.tickets') }}">HelpSpace <small>support workspace</small></a>
+{% if g.user %}<nav><a href="{{ url_for('main.tickets') }}">Tickets</a><a href="{{ url_for('main.profile') }}">Profile</a>{% if g.user.role == 'admin' %}<a href="{{ url_for('main.admin') }}">Administration</a>{% endif %}<form action="{{ url_for('main.logout') }}" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="quiet">Sign out</button></form></nav>{% endif %}</header>
+<main>{% for message in get_flashed_messages() %}<p class="notice">{{ message }}</p>{% endfor %}{% block content %}{% endblock %}</main>
+<footer>HelpSpace · Local assessment environment · Fictional data</footer></body></html>
